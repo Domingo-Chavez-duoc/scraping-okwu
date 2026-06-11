@@ -28,7 +28,7 @@ convention = {
 
 
 class Base(DeclarativeBase):
-    metadata = MetaData(schema="envios", naming_convention=convention)
+    metadata = MetaData(schema="usuario", naming_convention=convention)
 
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:
