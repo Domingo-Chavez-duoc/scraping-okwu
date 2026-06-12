@@ -1,0 +1,53 @@
+services:
+  # 1. BASE DE DATOS (Intacta, tal como la hizo tu compañero)
+  db:
+    image: postgres:16
+    container_name: auth_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: auth_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. BACKEND FASTAPI (Rutas actualizadas para que apunten a su carpeta)
+  api:
+    build: ./Scraping-FastApi
+    container_name: auth_api
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./Scraping-FastApi/.env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./Scraping-FastApi:/code
+
+  # 3. FRONTEND VUE (Tu nueva integración)
+  frontend:
+    build: ./Frontend/Scraping-Vue
+    container_name: auth_frontend
+    restart: always
+    depends_on:
+      - api
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./Frontend/Scraping-Vue:/app
+      - /app/node_modules # Protege los módulos internos de Node en Docker
+    environment:
+      # Esta variable asegura que el "hot-reload" funcione bien en Windows + Docker
+      - CHOKIDAR_USEPOLLING=true 
+
+volumes:
+  pgdata:

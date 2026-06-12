@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const API = axios.create({
-  baseURL: 'http://localhost:8000/api', // URL del FastAPI de tu compañero
+  baseURL: 'http://localhost:8000/api', // URL del FastAPI
   headers: {
     'Content-Type': 'application/json'
   }

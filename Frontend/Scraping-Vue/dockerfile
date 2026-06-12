@@ -1,0 +1,10 @@
+# Cambiamos node:18-alpine por node:22-alpine
+FROM node:22-alpine
+
+# El resto queda exactamente igual...
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 5173
+CMD ["npm", "run", "dev", "--", "--host"]

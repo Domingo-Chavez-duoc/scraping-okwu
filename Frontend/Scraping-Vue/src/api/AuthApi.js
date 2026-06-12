@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8000/api"; // Ajustar al puerto del FastAPI
+const API_URL = "http://localhost:8000/login"; // Ajustar al puerto del FastAPI
 
 // --- MÓDULO DE AUTENTICACIÓN ---
 export async function loginUsuario(email, password) {
